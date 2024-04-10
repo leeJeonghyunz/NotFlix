@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/NotFlix/static/js/main.f839ac53.js",
+    "static/media/noImage.jpg": "/NotFlix/static/media/noImage.2efe78cdf6dbf909f571.jpg",
+    "index.html": "/NotFlix/index.html",
+    "main.f839ac53.js.map": "/NotFlix/static/js/main.f839ac53.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.f839ac53.js"
+  ]
+}
