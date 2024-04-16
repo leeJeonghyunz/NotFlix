@@ -21,24 +21,16 @@ function App() {
     });
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Helmet>
         <title>NotFlix</title>
       </Helmet>
       <Header />
       <Switch>
-        <Route path={"/practice"}>
-          <Practice
-            data={upcoming}
-            isLoading={upcomingLoading}
-            title="Upcoming"
-            viewZero="viewZero"
-          />
-        </Route>
         <Route path={["/tv", "/tv/tvId"]}>
           <Tv />
         </Route>
-        <Route path={[`/search`, "/x"]}>
+        <Route path={[`/search`]}>
           <Search />
         </Route>
         <Route path={["/", "/movies/movieId"]}>
