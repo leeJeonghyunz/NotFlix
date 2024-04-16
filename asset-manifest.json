@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/NotFlix/static/css/main.837a7d5d.css",
-    "main.js": "/NotFlix/static/js/main.38d103f3.js",
+    "main.css": "/NotFlix/static/css/main.69747bd2.css",
+    "main.js": "/NotFlix/static/js/main.2f0d06ba.js",
     "static/media/noImage.jpg": "/NotFlix/static/media/noImage.2efe78cdf6dbf909f571.jpg",
     "index.html": "/NotFlix/index.html",
-    "main.837a7d5d.css.map": "/NotFlix/static/css/main.837a7d5d.css.map",
-    "main.38d103f3.js.map": "/NotFlix/static/js/main.38d103f3.js.map"
+    "main.69747bd2.css.map": "/NotFlix/static/css/main.69747bd2.css.map",
+    "main.2f0d06ba.js.map": "/NotFlix/static/js/main.2f0d06ba.js.map"
   },
   "entrypoints": [
-    "static/css/main.837a7d5d.css",
-    "static/js/main.38d103f3.js"
+    "static/css/main.69747bd2.css",
+    "static/js/main.2f0d06ba.js"
   ]
 }
