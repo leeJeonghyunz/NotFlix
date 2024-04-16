@@ -27,8 +27,6 @@ function Search() {
     queryFn: () => searchTv(keyState),
   });
 
-  console.log(keyState);
-
   return (
     <Wrapper>
       <SliderFn

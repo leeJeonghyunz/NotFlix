@@ -6,10 +6,20 @@ import Header from "./Components/Header";
 import { useRecoilValue } from "recoil";
 import { keywordState } from "./atoms";
 import { Helmet } from "react-helmet";
+import Footer from "./Components/Footer";
+import { Practice } from "./practice";
+import { useQuery } from "@tanstack/react-query";
+import { IGetMovieResult, getUpcomingMovie } from "./api";
 
 function App() {
   const keyword = useRecoilValue(keywordState);
-  console.log(keyword);
+
+  const { data: upcoming, isLoading: upcomingLoading } =
+    useQuery<IGetMovieResult>({
+      queryKey: ["movies", "upcomingMovie"],
+      queryFn: getUpcomingMovie,
+    });
+
   return (
     <BrowserRouter>
       <Helmet>
@@ -17,6 +27,14 @@ function App() {
       </Helmet>
       <Header />
       <Switch>
+        <Route path={"/practice"}>
+          <Practice
+            data={upcoming}
+            isLoading={upcomingLoading}
+            title="Upcoming"
+            viewZero="viewZero"
+          />
+        </Route>
         <Route path={["/tv", "/tv/tvId"]}>
           <Tv />
         </Route>
@@ -29,6 +47,7 @@ function App() {
           <Home />
         </Route>
       </Switch>
+      <Footer />
     </BrowserRouter>
   );
 }

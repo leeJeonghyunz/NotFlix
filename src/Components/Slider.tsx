@@ -7,15 +7,18 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { theme } from "../theme";
 import noImage from "../img/noImage.jpg";
+import { useMediaQuery } from "react-responsive";
+import MobileRow from "./reactive/MobileRow";
+import MobileBigMovie from "./reactive/MobileBigMovie";
 
-const Wrapper = styled.div`
-  margin-bottom: 250px;
+const Wrapper = styled.div<{ isPc: boolean }>`
+  margin-bottom: ${(props) => (props.isPc ? "250px" : "100px")};
 `;
 
-const Title = styled.h2`
+const Title = styled.h2<{ isPc: boolean }>`
   color: ${(props) => props.theme.white.darker};
   position: relative;
-  top: -170px;
+  top: ${(props) => (props.isPc ? "-170px" : "-100px")};
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 2rem;
@@ -53,10 +56,15 @@ const SVG = styled(motion.svg)<{ arrowHover: boolean }>`
 
 const Path = styled(motion.path)``;
 
-const Row = styled(motion.div)`
+const Row = styled(motion.div)<{ isMobile: boolean; isPc: boolean }>`
   display: grid;
   gap: 5px;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: ${(props) =>
+    props.isMobile
+      ? " repeat(3, 1fr)"
+      : props.isPc
+      ? "repeat(6, 1fr)"
+      : "repeat(4,1fr)"};
   position: absolute;
   width: 100%;
 `;
@@ -166,11 +174,11 @@ const MovieDetailLoading = styled.p`
   font-size: 36px;
 `;
 
-const BigMovie = styled(motion.div)`
+const BigMovie = styled(motion.div)<{ isPc?: boolean }>`
   position: fixed;
-  width: 45vw;
-  height: 80vh;
-  top: 100px; //  top이 스크롤Y의 위치로 조정, 'MotionValue<number>' and 'number'와 number를 결합시킬 수 없다. 따라서 scrollY.get()사용.
+  width: ${(props) => (props.isPc ? "45vw" : "100%")};
+  height: ${(props) => (props.isPc ? "80vh" : "100%")};
+  top: ${(props) => (!props.isPc ? "0" : "100px")};
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -187,6 +195,7 @@ const BigCover = styled.div`
   background-position: center center;
   height: 500px;
   z-index: 10;
+  display: flex;
 `;
 
 const BigTitle = styled.h2`
@@ -270,12 +279,18 @@ export function SliderFn({
   search,
   viewZero,
 }: ISliderFnProps) {
+  const isPc = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isTablet = useMediaQuery({ query: "(min-width: 768px)" });
+  const isMobile = !isPc && !isTablet;
+
   const searchFalse = "/movies/:movieId";
   const searchTrue = "/search/movies/:movieId";
 
   const bigMovieMatch = useRouteMatch<IMovieId>(
     search ? searchTrue : searchFalse
   );
+
+  console.log(isPc, bigMovieMatch);
 
   const [arrowBoxHover, setArrowBoxHover] = useState(false);
   const [arrowHover, setArrowHover] = useState(false);
@@ -284,7 +299,7 @@ export function SliderFn({
 
   const [index, setIndex] = useState(0);
   const history = useHistory(); // 리액트에서 URL주소를 변경할 때 사용하는 Hook
-  const offset = 6;
+  const offset = isMobile ? 3 : isPc ? 6 : 4;
 
   const movieId = bigMovieMatch?.params.movieId ?? "";
   const { data: movieDetail } = useQuery<IGetMovieDetailResult>({
@@ -333,8 +348,8 @@ export function SliderFn({
   return (
     <>
       {" "}
-      <Wrapper>
-        <Title>{title}</Title>
+      <Wrapper isPc={isPc}>
+        <Title isPc={isPc}>{title}</Title>
         <Slider
           onMouseEnter={() => setArrowBoxHover(true)}
           onMouseLeave={() => setArrowBoxHover(false)}
@@ -374,54 +389,66 @@ export function SliderFn({
               <Path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z" />
             </SVG>
           </ArrowBox>
-          <AnimatePresence
-            initial={false}
-            onExitComplete={() => {
-              toggleLeaving();
-            }}
-          >
-            <Row
-              variants={reverse ? rowReverseVariant : rowVariant}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              key={index}
-              transition={{ type: "tween", duration: 1 }}
+          {isPc && (
+            <AnimatePresence
+              initial={false}
+              onExitComplete={() => {
+                toggleLeaving();
+              }}
             >
-              {data?.results
-                .slice(viewZero ? 0 : 1)
-                .slice(offset * index, offset + offset * index)
-                .map((movie: IMovie) => (
-                  <Box
-                    layoutId={movie.id + "" + title}
-                    transition={{ type: "tween" }}
-                    variants={boxVariant}
-                    whileHover="hover"
-                    initial="normal"
-                    key={movie.id}
-                    onClick={() => onClickedBox(movie.id)}
-                    bgphoto={
-                      movie.backdrop_path
-                        ? makeImagePath(movie.backdrop_path, "w400")
-                        : noImage
-                    }
-                  >
-                    <Info variants={infoVariant}>
-                      <h4>{movie.title}</h4>
-                    </Info>
-                  </Box>
-                ))}
-            </Row>
-          </AnimatePresence>
+              <Row
+                isPc={isPc}
+                isMobile={isMobile}
+                variants={reverse ? rowReverseVariant : rowVariant}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                key={index}
+                transition={{ type: "tween", duration: 1 }}
+              >
+                {data?.results
+                  .slice(viewZero ? 0 : 1)
+                  .slice(offset * index, offset + offset * index)
+                  .map((movie: IMovie) => (
+                    <Box
+                      layoutId={movie.id + "" + title}
+                      transition={{ type: "tween" }}
+                      variants={boxVariant}
+                      whileHover="hover"
+                      initial="normal"
+                      key={movie.id}
+                      onClick={() => onClickedBox(movie.id)}
+                      bgphoto={
+                        movie.backdrop_path
+                          ? makeImagePath(movie.backdrop_path, "w400")
+                          : noImage
+                      }
+                    >
+                      <Info variants={infoVariant}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
+                  ))}
+              </Row>
+            </AnimatePresence>
+          )}
+          <>
+            {!isPc && (
+              <MobileRow data={data} title={title} isLoading={isLoading} />
+            )}
+          </>
           <AnimatePresence>
-            {bigMovieMatch && (
+            {isPc && bigMovieMatch && (
               <>
                 <Overlay
                   onClick={onClickOverlay}
                   exit={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 />
-                <BigMovie layoutId={bigMovieMatch.params.movieId + title}>
+                <BigMovie
+                  isPc={isPc}
+                  layoutId={bigMovieMatch.params.movieId + title}
+                >
                   {!movieDetail ? (
                     <MovieDetailLoading>Loading~~~</MovieDetailLoading>
                   ) : (
@@ -467,6 +494,14 @@ export function SliderFn({
                   )}
                 </BigMovie>
               </>
+            )}
+            {!isPc && bigMovieMatch && (
+              <MobileBigMovie
+                movieDetail={movieDetail}
+                bigMovieMatch={bigMovieMatch}
+                genres={genres}
+                title={title}
+              />
             )}
           </AnimatePresence>
         </Slider>
