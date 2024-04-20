@@ -441,7 +441,10 @@ export function TvSlider({ data, title, search, viewZero }: ISliderFnProps) {
                   exit={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 />
-                <BigMovie layoutId={bigMovieMatch.params.tvId + title}>
+                <BigMovie
+                  layoutId={bigMovieMatch.params.tvId + title}
+                  isPc={isPc}
+                >
                   {!tvDetail ? (
                     <MovieDetailLoading>Loading~~~</MovieDetailLoading>
                   ) : (

@@ -98,7 +98,7 @@ const Search = styled.form`
 const Input = styled(motion.input)<{ isPc: boolean; isTablet: boolean }>`
   transform-origin: right center;
   position: absolute;
-  right: ${(props) => (props.theme.isPc ? "160px" : "40px")};
+  right: ${(props) => (props.theme.isPc ? "200px" : "40px")};
   height: 35px;
   width: 275px;
   background-color: rgba(0, 0, 0, 0.5);
@@ -207,7 +207,7 @@ function Header() {
             <motion.svg
               style={{ cursor: "pointer" }}
               animate={{
-                x: openSearch ? (isPc ? -400 : -280) : isPc ? -170 : -50,
+                x: openSearch ? -280 : -60,
               }}
               onClick={toggleSearch}
               transition={{ type: "linear" }}

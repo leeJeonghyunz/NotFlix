@@ -290,8 +290,6 @@ export function SliderFn({
     search ? searchTrue : searchFalse
   );
 
-  console.log(isPc, bigMovieMatch);
-
   const [arrowBoxHover, setArrowBoxHover] = useState(false);
   const [arrowHover, setArrowHover] = useState(false);
   const [leaving, setLeaving] = useState(false); // 중복 클릭을 방지.
@@ -322,7 +320,9 @@ export function SliderFn({
   const onClickIncreaseIndex = () => {
     setReverse(false);
     if (data) {
-      const totalMovies = data?.results.length - 1;
+      const totalMovies = viewZero
+        ? data.results.length
+        : data.results.length - 1;
       const maxMovies = Math.ceil(totalMovies / offset) - 1;
       if (leaving) return;
       toggleLeaving();
