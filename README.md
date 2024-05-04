@@ -4,7 +4,7 @@
 
 ## 😀 Introduce
 
-OTT 플랫폼인 넷플릭스를 클론 코딩하였습니다. TMDB 이라는 영화와 TV 프로그램의 데이터베이스를 구축해놓은 커뮤니티에서 API를 얻어왔습니다.
+OTT 플랫폼인 넷플릭스를 클론 코딩하였습니다. TMDB 이라는 영화와 TV 프로그램의 데이터베이스를 구축해놓은 커뮤니티에서 API를 얻어왔습니다. 🎥🎬
 
 주소: <https://www.themoviedb.org/?language=ko>
 
