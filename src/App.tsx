@@ -3,23 +3,10 @@ import Home from "./Routes/Home";
 import Tv from "./Routes/TV";
 import Search from "./Routes/Search";
 import Header from "./Components/Header";
-import { useRecoilValue } from "recoil";
-import { keywordState } from "./atoms";
 import { Helmet } from "react-helmet";
 import Footer from "./Components/Footer";
-import { Practice } from "./practice";
-import { useQuery } from "@tanstack/react-query";
-import { IGetMovieResult, getUpcomingMovie } from "./api";
 
 function App() {
-  const keyword = useRecoilValue(keywordState);
-
-  const { data: upcoming, isLoading: upcomingLoading } =
-    useQuery<IGetMovieResult>({
-      queryKey: ["movies", "upcomingMovie"],
-      queryFn: getUpcomingMovie,
-    });
-
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Helmet>
